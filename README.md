@@ -16,7 +16,12 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 (See [uv](https://astral.sh/uv/) for more details.)
 
-You can confirm that all dependencies are installed with `uv sync`.
+Install dependencies with,
+
+```bash
+uv sync
+uv pip install -e .
+```
 
 ## Roadmap
 
