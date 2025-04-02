@@ -1,6 +1,8 @@
 import enum
-from typing import Optional, TypedDict
+from typing import Literal, Optional, TypedDict
 from torch.utils.data import Dataset
+
+import datasets
 
 
 class FormalityLevel(enum.Enum):
@@ -89,6 +91,62 @@ class FormalityDataset(Dataset):
             "text": self.data[idx]["text"],
             "label": float(self.data[idx]["label"] == FormalityLevel.FORMAL),
         }
+
+
+class PavlickFormalityDataset(FormalityDataset):
+    """
+    A dataset class for handling Pavlick formality data.
+    This class extends the FormalityDataset class.
+
+    # https://huggingface.co/datasets/osyvokon/pavlick-formality-scores
+    """
+
+    def __init__(self, mode: Literal["float", "int", "enum"]):
+        self.dataset = datasets.load_dataset(
+            "osyvokon/pavlick-formality-scores", split="train"
+        )
+        self.mode = mode
+
+    def __len__(self):
+        """
+        Return the number of samples in the dataset.
+        """
+        return len(self.dataset)
+
+    def __getitem__(self, idx) -> FormalityDatasetDict:
+        """
+        Retrieve a sample from the dataset by index.
+
+        Args:
+            idx (int): Index of the sample to retrieve.
+
+        Returns:
+            dict: A dictionary containing the input and label for the sample.
+        """
+        item = self.dataset[idx]
+        if self.mode == "float":
+            # Return float representation
+            return {
+                "text": str(item["sentence"]),
+                "label": float(item["avg_score"]),
+            }
+        elif self.mode == "enum":
+            # Return string label
+            return {
+                "text": str(item["sentence"]),
+                "label": FormalityLevel.FORMAL
+                if item["avg_score"] > 0
+                else FormalityLevel.INFORMAL,
+            }
+        elif self.mode == "int":
+            """
+            Return the label as a string ('formal' or 'informal') based on avg_score threshold.
+            """
+            return {
+                "text": str(item["sentence"]),
+                # Convert avg_score to 0 or 1 based on threshold (0.5)
+                "label": int(item["avg_score"] > 0),  # 1 for formal, 0 for informal
+            }
 
 
 class ContrastiveFormalityDataset(FormalityDataset):
