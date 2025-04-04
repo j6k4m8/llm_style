@@ -147,8 +147,13 @@ class PavlickFormalityDataset(FormalityDataset):
                 # Convert avg_score to 0 or 1 based on threshold (0.5)
                 "label": int(item["avg_score"] > 0),  # 1 for formal, 0 for informal
             }
-
-
+        elif self.mode == "filtered":
+            # Only keep samples with avg_score >= 1 or <= -1
+            if abs(item["avg_score"]) >= .75:
+                return {
+                    "text": str(item["sentence"]),
+                    "label": int(item["avg_score"] > 0),  # 1 for formal, 0 for informal
+                }
 class ContrastiveFormalityDataset(FormalityDataset):
     """
     A dataset class for handling contrastive formality style tasks.
