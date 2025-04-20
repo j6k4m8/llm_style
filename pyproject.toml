@@ -7,10 +7,7 @@ requires-python = ">=3.11"
 dependencies = [
     "accelerate>=1.5.2",
     "datasets>=3.5.0",
-<<<<<<< HEAD
     "evaluate>=0.4.3",
-=======
->>>>>>> 07a2dcb1db0582cb05df8967782501f91b5f882a
     "lightning-transformers>=0.2.5",
     "matplotlib>=3.10.1",
     "openai>=1.70.0",
