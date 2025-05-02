@@ -1,10 +1,12 @@
-\documentclass[twocolumn]{article}
+% \documentclass[twocolumn]{article}
+\documentclass{article}
 \usepackage{graphicx}
-\usepackage[T1]{fontenc}
-\usepackage{charter}
+% \usepackage[T1]{fontenc}
+% \usepackage{charter}
 \usepackage{authblk}
 \usepackage{hyperref}
 \usepackage{natbib}
+\usepackage{array}
 \usepackage{amsmath}
 % \usepackage{float}
 
@@ -230,7 +232,48 @@ Difference  & -0.031 & -0.029 & -0.020 & -0.023 \\
 \end{tabular}
 \end{table*}
 
-These results confirm no significant compromise in semantic integrity despite style modifications, with only a small reduction (approximately 3\%) in ROUGE scores compared to the baseline model. This minimal degradation in content preservation metrics demonstrates that our style embedding approach effectively separates style representation from content, allowing style manipulation without substantial impact on the underlying meaning.
+\begin{table*}
+\centering
+\caption{Examples of Style Transfer with Different Domain Latents}
+\label{tab:style-transfer-examples}
+\begin{tabular}{>{\raggedright\arraybackslash}p{1.5cm} >{\raggedright\arraybackslash}p{14cm}}
+\hline
+\textbf{Style} & \textbf{Generated Text} \\
+\hline
+Original & The MDC has a long list of complaints it alleges are non-fulfillment of the Global Political Agreement and wants resolved before it can participate fully in government. \\
+\hline
+ANSWERS & MDC also accused the ZANU PF government of being a one party state and said the MDC is not treated as an equal partner... \\
+\hline
+BLOG & So, MDC accused the government of failing to address key issues. \\
+\hline
+EMAIL & the MDC-T says it wants the reserve bank gov to be replaced and that it wants to know what is in the arms deal signed by the government? \\
+\hline
+\hline
+Original & How does it affect dogs? \\
+\hline
+ANSWERS & What are the symptoms? What should I do if my dog has it? And, can my dog give it to me? \\
+\hline
+BLOG & Dogs can suffer from various neurological disorders, including epilepsy, which can cause seizures and other symptoms affecting their nervous system. \\
+\hline
+NEWS & The disease can cause severe symptoms in dogs, including diarrhea, vomiting, and lethargy. It can be particularly dangerous for puppies, elderly dogs, or those with compromised immune systems. \\
+\hline
+EMAIL & **What are common signs of poisoning in dogs?** - **Answer:** Common signs include vomiting, diarrhea, excessive drooling, lethargy, difficulty breathing, seizures, and loss of coordination. \\
+\hline
+\end{tabular}
+\end{table*}
+
+These results confirm minor compromise in semantic integrity despite style modifications, with only a small reduction (approximately 3\%) in ROUGE scores compared to the baseline model. This minimal degradation in content preservation metrics demonstrates that our style embedding approach effectively separates style representation from content, allowing style manipulation without substantial impact on the underlying meaning.
+
+
+\subsubsection{Style Transfer Examples}
+
+Table~\ref{tab:style-transfer-examples} illustrates examples of style transfer using our approach, where we applied different domain-specific latent vectors to the same content.
+The table showcases how the original text is rendered differently when encoded with ANSWERS, BLOG, and EMAIL style latents.
+Note how each variant maintains similar (but clearly imperfect) core information while adopting characteristic stylistic elements of its domain: the ANSWERS style uses more accusatory language, the BLOG style incorporates temporal markers and detailed reporting, and the EMAIL style employs a more direct, abbreviated approach with question formatting.
+These examples demonstrate the model's ability to transform text style while preserving the underlying semantic content.
+
+In the second example, notice the confusion where the EMAIL generation (which begins with \textit{What are common signs of poisoning in dogs?}) begins with a question and forms what appears to be an ANSWERS style response, reflecting the findings from the domain probing experiments that EMAIL and ANSWERS are stylistically similar and often confused (Fig.~\ref{fig:domain-confusion}).
+
 
 \section{Conclusion and Future Work}
 
